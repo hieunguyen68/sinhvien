@@ -123,8 +123,6 @@ const SendCv = (props) => {
             <Text style={styles.text3}>Tải lên</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.text2}>Thư giới thiệu</Text>
-        <UselessTextInputMultiline />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity

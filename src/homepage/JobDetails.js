@@ -1,14 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-  Image,
-  useWindowDimensions,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {
   AuthorIcon,
   MoneyIcon,
@@ -42,14 +33,21 @@ import TabStack from '../../Navigation/StackTab';
 import StackTab from '../../Navigation/StackTab';
 import InforJob from './InforJob';
 
-const JobDetails = (props) => {
+const JobDetails = props => {
   const route = useRoute();
   const navigation = useNavigation();
-
+  console.log(route.params.image);
   return (
     <View style={styles.container}>
       <View style={styles.layer}>
-        <View style={styles.imageNew}>{route.params.image}</View>
+        <View style={styles.imageNew}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: `http://localhost:4000/uploads/post/${route.params.image}`,
+            }}
+          />
+        </View>
         <View style={styles.text}>
           <View style={styles.viewNew}>
             <Text style={styles.timeText1} numberOfLines={2}>
@@ -63,9 +61,11 @@ const JobDetails = (props) => {
       </View>
       <View style={styles.iconday}>
         <DateAndTimeIcon />
-        <Text style={styles.timeText}>Hạn nộp hồ sơ: {route.params.date} </Text>
+        <Text style={styles.timeText}>
+          Hạn nộp hồ sơ: {route.params.expireDate}{' '}
+        </Text>
       </View>
-      <StackTab data={route.params.title}></StackTab>
+      <StackTab data={route.params}></StackTab>
 
       <View style={styles.line} />
       <View style={styles.buttonContainer}>

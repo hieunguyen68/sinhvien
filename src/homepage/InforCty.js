@@ -34,7 +34,9 @@ import {
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {scale} from 'react-native-size-matters';
 
-const InforCty = (props) => {
+const InforCty = props => {
+  const {data} = props.route.params;
+  console.log(data.website);
   const navigation = useNavigation();
   const route = useRoute();
   return (
@@ -43,31 +45,21 @@ const InforCty = (props) => {
         <ScrollView>
           <TouchableOpacity>
             <Text style={styles.text1}>Công ty: </Text>
-            <Text style={styles.text2}>Xem chi tiết ></Text>
+            <Text style={styles.text2}>Xem chi tiết {'>'}</Text>
           </TouchableOpacity>
           <View style={styles.iconAndText}>
             <AddressIcon />
-            <Text style={styles.text3}>Khu vực: {route.params.khuvuc}</Text>
+            <Text style={styles.text3}>Địa chỉ: {data.companyAddress}</Text>
           </View>
           <View style={styles.iconAndText}>
             <WebIcon />
             <Text style={styles.text3}>Website: </Text>
-            <Text style={styles.text4}>
-              www.website.com{route.params.khuvuc}
-            </Text>
+            <Text style={styles.text4}>{data.website}</Text>
           </View>
           <View style={styles.line} />
           <View>
             <Text style={styles.timeText4}>GIỚI THIỆU CÔNG TY</Text>
-            <Text style={styles.timeText5}>
-              SOpen tập trung vào các công nghệ mang tính mở, có xu hướng phát
-              triển mạnh mẽ trong tương lai. Điểm hình như các công nghệ
-              Serverless dựa trên nền tảng điện toán đám mây, các công nghệ manh
-              tính xu hướng như IOT... Xuất phát từ một công ty chuyên về các
-              giải pháp phần mềm ERP, kế toán, tài chính, chúng tôi đã mở rộng
-              các giải pháp để đáp ứng tốt hơn nữa nhu cầu của khách hàng.
-              {route.params.gioithieuct}
-            </Text>
+            <Text style={styles.timeText5}>{data.companyIntro}</Text>
           </View>
         </ScrollView>
       </View>

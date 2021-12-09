@@ -9,6 +9,7 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import {getEndpoint} from './utils';
 import {scale} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
@@ -46,7 +47,7 @@ const LoginScreen = ({navigation}) => {
     isValidPassword: true,
   });
 
-  const textInputChange = (val) => {
+  const textInputChange = val => {
     if (val.trim().length >= 8) {
       setData({
         ...data,
@@ -64,7 +65,7 @@ const LoginScreen = ({navigation}) => {
     }
   };
 
-  const handlePasswordChange = (val) => {
+  const handlePasswordChange = val => {
     if (val.trim().length >= 8) {
       setData({
         ...data,
@@ -87,7 +88,7 @@ const LoginScreen = ({navigation}) => {
     });
   };
 
-  const handleValidUser = (val) => {
+  const handleValidUser = val => {
     if (val.trim().length >= 8) {
       setData({
         ...data,
@@ -101,24 +102,23 @@ const LoginScreen = ({navigation}) => {
     }
   };
   const loginHandle = async (userName, password) => {
-    await axios
-      .post('http://192.168.1.215:4000/v1/auth/login', {
+    try {
+      const res = await axios.post(`${getEndpoint(Platform.OS)}/auth/login`, {
         id: userName,
         password,
-      })
-      .then(function (response) {
-        console.log('Đăng nhập thành công');
-        setModalVisible1(true);
-        navigation.navigate('BottomTabNavigations');
-      })
-      .catch(function (error) {
-        console.log('Đăng nhập thất bại');
-        Alert.alert(
-          'Đăng nhập không thành công, vui lòng kiểm tra tên đăng nhập hoặc mật khẩu!',
-        );
-        console.log(error);
-        setModalVisible(true);
       });
+      AsyncStorage.setItem('user', JSON.stringify(res.data));
+      console.log('Đăng nhập thành công');
+      setModalVisible1(true);
+      navigation.navigate('BottomTabNavigations');
+    } catch (error) {
+      console.log('Đăng nhập thất bại');
+      Alert.alert(
+        'Đăng nhập không thành công, vui lòng kiểm tra tên đăng nhập hoặc mật khẩu!',
+      );
+      console.log(error);
+      setModalVisible(true);
+    }
   };
 
   return (
@@ -156,8 +156,8 @@ const LoginScreen = ({navigation}) => {
               },
             ]}
             autoCapitalize="none"
-            onChangeText={(val) => textInputChange(val)}
-            onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+            onChangeText={val => textInputChange(val)}
+            onEndEditing={e => handleValidUser(e.nativeEvent.text)}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn">
@@ -196,7 +196,7 @@ const LoginScreen = ({navigation}) => {
               },
             ]}
             autoCapitalize="none"
-            onChangeText={(val) => handlePasswordChange(val)}
+            onChangeText={val => handlePasswordChange(val)}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}>
             {data.secureTextEntry ? <EyeOffIcon /> : <EyeIcon />}

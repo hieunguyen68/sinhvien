@@ -37,8 +37,8 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import MainHomepage from '../homepage/Main';
-const InforJob = (props) => {
-  console.log(props.route.params);
+const InforJob = props => {
+  const {data} = props.route.params;
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -49,59 +49,51 @@ const InforJob = (props) => {
           <View style={styles.topTittle}>
             <View style={styles.iconAndText}>
               <PayIcon />
-              <Text style={styles.timeText2}>
-                Mức lương: {props.route.params.pay}
-              </Text>
+              <Text style={styles.timeText2}>Mức lương: {data.salary}</Text>
             </View>
             <View style={styles.iconAndText}>
               <AddressIcon />
               <Text style={styles.timeText3}>
-                Khu vực: {route.params.khuvuc}
+                Khu vực: {data.companyLocation}
               </Text>
             </View>
             <View style={styles.iconAndText}>
               <ClockIcon1 />
-              <Text style={styles.timeText3}>
-                Hình thức: {route.params.hinhthuc}
-              </Text>
+              <Text style={styles.timeText3}>Hình thức: {data.type}</Text>
             </View>
             <View style={styles.iconAndText}>
               <PeopleIcon />
               <Text style={styles.timeText3}>
-                Số lượng cần tuyển: {route.params.soluong}
+                Số lượng cần tuyển: {data.quantity}
               </Text>
             </View>
             <View style={styles.iconAndText}>
               <GenderIcon />
-              <Text style={styles.timeText3}>
-                Giới tính: {route.params.gioitinh}
-              </Text>
+              <Text style={styles.timeText3}>Giới tính: {data.gender}</Text>
             </View>
             <View style={styles.iconAndText}>
               <BriefIcon />
-              <Text style={styles.timeText3}>
-                Chức vụ: {route.params.chucvu}
-              </Text>
+              <Text style={styles.timeText3}>Chức vụ: {data.role}</Text>
             </View>
             <View style={styles.iconAndText}>
               <ExpIcon />
               <Text style={styles.timeText3}>
-                Kinh nghiệm yêu cầu: {route.params.kinhnghiem}
+                Kinh nghiệm yêu cầu: {data.exp}
               </Text>
             </View>
             <View style={styles.line} />
 
             <View>
               <Text style={styles.timeText4}>MÔ TẢ CÔNG VIỆC</Text>
-              <Text style={styles.timeText5}>{route.params.motacv}</Text>
+              <Text style={styles.timeText5}>{data.description}</Text>
             </View>
             <View>
               <Text style={styles.timeText4}>YÊU CẦU CÔNG VIỆC</Text>
-              <Text style={styles.timeText5}>{route.params.yeucaucv}</Text>
+              <Text style={styles.timeText5}>{data.requirement}</Text>
             </View>
             <View>
               <Text style={styles.timeText4}>QUYỀN LỢI</Text>
-              <Text style={styles.timeText5}>{route.params.quyenloicv}</Text>
+              <Text style={styles.timeText5}>{data.benefit}</Text>
             </View>
           </View>
         </ScrollView>
