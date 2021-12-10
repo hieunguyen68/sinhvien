@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-
-import {View, StyleSheet, Image, AsyncStorage} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {View, StyleSheet, Image} from 'react-native';
 import {
   useTheme,
   Avatar,
@@ -32,9 +32,21 @@ import {
 export function DrawerContent({props, navigation}) {
   const paperTheme = useTheme();
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   // const {signOut, toggleTheme} = React.useContext(AuthContext);
+  const [user, setUser] = useState({});
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem('user');
+      setUser(JSON.parse(user));
+    } catch (error) {}
+  };
+  console.log(user);
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -42,27 +54,14 @@ export function DrawerContent({props, navigation}) {
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'row', marginTop: 15}}>
               <Avatar.Image
-                source={require('../../img/logohvktmm.png')}
+                source={{
+                  uri: `http://192.168.1.5:4000/uploads/avatar/${user.avatar}`,
+                }}
                 size={50}
               />
               <View style={{marginLeft: 15, flexDirection: 'column'}}>
-                <Title style={styles.title}>NGUYEN VAN A</Title>
-                <Caption style={styles.caption}>@nguyen_a</Caption>
-              </View>
-            </View>
-
-            <View style={styles.row}>
-              <View style={styles.section}>
-                <Paragraph style={[styles.paragraph, styles.caption]}>
-                  80
-                </Paragraph>
-                <Caption style={styles.caption}>Following</Caption>
-              </View>
-              <View style={styles.section}>
-                <Paragraph style={[styles.paragraph, styles.caption]}>
-                  100
-                </Paragraph>
-                <Caption style={styles.caption}>Followers</Caption>
+                <Title style={styles.title}>{user.name}</Title>
+                <Caption style={styles.caption}>{user.email}</Caption>
               </View>
             </View>
           </View>

@@ -138,7 +138,7 @@ const MainHomepage = () => {
               <Image
                 style={styles.image}
                 source={{
-                  uri: `http://localhost:4000/uploads/post/${item.image}`,
+                  uri: `http://192.168.1.5:4000/uploads/post/${item.image}`,
                 }}
               />
             </View>

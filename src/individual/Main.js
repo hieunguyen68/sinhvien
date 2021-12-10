@@ -24,80 +24,29 @@ const MainIndividual = () => {
   const [token, setToken] = useState('');
   const [count, setCount] = useState(0);
   const navigation = useNavigation();
+  const [user, setUser] = useState({});
 
-  // const getToken = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem('@MyToken');
-  //     if (value !== null) {
-  //       console.log('We have Token');
-  //       setToken(value);
-  //     } else {
-  //       console.log('Dont have Token');
-  //     }
-  //   } catch (err) {
-  //     console.log('Read data error');
-  //   }
-  //   console.log('Done.');
-  // };
-  // const getdata = async () => {
-  //   // await getToken();
-  //   await axios
-  //     .get(
-  //       'https://elearning.tmgs.vn/api/competition/my-competition/statistical',
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       },
-  //     )
-  //     .then((response) => {
-  //       setDataHistory(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       // handle error
-  //       setCount(count + 1);
-  //       console.log(error);
-  //     })
-  //     .finally(() => {
-  //       console.log(dataHistory);
-  //       dataHistory.length === 0 ? setCount(count + 1) : null;
-  //     });
-  //   await axios
-  //     .get('https://elearning.tmgs.vn/api/profile/detail', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setDataUser(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       // handle error
-  //       console.log(error);
-  //     })
-  //     .finally(() => {
-  //       console.log(dataUser);
-  //       dataUser.length === 0 ? setCount(count + 1) : null;
-  //     });
-  // };
-  // useEffect(() => {
-  //   getdata();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [count]);
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem('user');
+      setUser(JSON.parse(user));
+    } catch (error) {}
+  };
+  console.log(user);
   return (
     <View style={styles.container}>
       <TitleBar title1={'Trang cá nhân'} />
       <View style={styles.avatarContainer}>
         <View style={styles.circle}>
-          {/* <Image
-            style={styles.logo}
-            source={{
-              uri: 'http://elearning.tmgs.vn' + route.params.avatar,
-            }}
-          /> */}
           <Image
             style={styles.logo}
-            source={require('../../img/logohvktmm.png')}
+            source={{
+              uri: `http://192.168.1.5:4000/uploads/avatar/${user.avatar}`,
+            }}
           />
         </View>
       </View>
@@ -143,44 +92,40 @@ const MainIndividual = () => {
               <View style={styles.leftLine} />
             </View>
             <View style={styles.RightTable}>
-              <Text style={styles.textLeft}>{dataUser.fullname}</Text>
+              <Text style={styles.textLeft}>{user.name}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.MaSv}</Text>
+              <Text style={styles.textLeft}>{user.id}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.class}</Text>
+              <Text style={styles.textLeft}>{user.class}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>
-                {new Date(dataUser.birth).toLocaleDateString('en-GB')}
-              </Text>
+              <Text style={styles.textLeft}>{user.birthday}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>
-                {dataUser.gender === 1 ? 'Nam' : 'Nữ'}
-              </Text>
+              <Text style={styles.textLeft}>{user.gender}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.email}</Text>
+              <Text style={styles.textLeft}>{user.email}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.place}</Text>
+              <Text style={styles.textLeft}>{user.address}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.phone}</Text>
+              <Text style={styles.textLeft}>{user.phone}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.company}</Text>
+              <Text style={styles.textLeft}>{user.companyName}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.skill}</Text>
+              <Text style={styles.textLeft}>{user.skill}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.degree}</Text>
+              <Text style={styles.textLeft}>{user.degree}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{dataUser.careergoals}</Text>
+              <Text style={styles.textLeft}>{user.careerGoal}</Text>
               <View style={styles.rightLine} />
             </View>
           </View>

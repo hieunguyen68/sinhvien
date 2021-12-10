@@ -44,7 +44,7 @@ const JobDetails = props => {
           <Image
             style={styles.image}
             source={{
-              uri: `http://localhost:4000/uploads/post/${route.params.image}`,
+              uri: `http://192.168.1.5:4000/uploads/post/${route.params.image}`,
             }}
           />
         </View>

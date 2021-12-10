@@ -17,6 +17,8 @@ import {getEndpoint} from '../utils';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {socket} from '../../index';
+import {TextInput} from 'react-native-gesture-handler';
+import {BellIcon, SendIcon} from '../../svg/icon';
 
 const DirectMessenger = props => {
   const [messages, setMessages] = useState([]);
@@ -24,6 +26,7 @@ const DirectMessenger = props => {
   const [first, setFirst] = useState(false);
   const route = useRoute();
   const {hrEmail} = route.params;
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     if (route.params && user) {
@@ -80,6 +83,7 @@ const DirectMessenger = props => {
 
   return (
     <View style={styles.container}>
+    <Text>aaaaaa</Text>
       <ScrollView
         ref={ref => {
           this.scrollView = ref;
@@ -94,6 +98,15 @@ const DirectMessenger = props => {
           renderItem={renderItem}
         />
       </ScrollView>
+      <View style={styles.TextInputArea}>
+        <TextInput
+          style={styles.inputText}
+          placeholder={'Aa'}
+          value={searchValue}
+          onChangeText={input => setSearchValue(input)}
+        />
+        <SendIcon style={{marginLeft: scale(10)}} />
+      </View>
     </View>
   );
 };
@@ -101,7 +114,7 @@ const DirectMessenger = props => {
 export default DirectMessenger;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, backgroundColor: 'white'},
   image: {
     flex: 1,
     width: scale(256),
@@ -161,19 +174,45 @@ const styles = StyleSheet.create({
   FlatList: {
     padding: scale(10),
     width: '100%',
+    
   },
   txtLessonC: {color: '#144E8C'},
   message: {
     width: '45%',
     marginTop: 10,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'rgb(230,230,230)',
     borderRadius: 10,
     padding: 10,
+    backgroundColor: 'rgb(230,230,230)',
   },
   name: {
     marginBottom: 5,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  newInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    fontSize: 16,
+    padding: 10,
+    height: 50,
+  },
+  TextInputArea: {
+    marginLeft: scale(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inputText: {
+    fontSize: scale(15),
+    width: '85%',
+    height: '100%',
+    height: scale(40),
+    backgroundColor: 'rgb(230,230,230)',
+    borderRadius: scale(15),
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: scale(1),
+    borderColor: 'rgb(230,230,230)',
   },
 });
