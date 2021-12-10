@@ -10,7 +10,8 @@ import {
 import {scale} from 'react-native-size-matters';
 import {Header} from '../components/header';
 
-const StackMessenger = ({navigation}) => {
+const StackMessenger = props => {
+  console.log(props);
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('../../img/meo.png')} />

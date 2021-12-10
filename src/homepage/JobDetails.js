@@ -36,7 +36,7 @@ import InforJob from './InforJob';
 const JobDetails = props => {
   const route = useRoute();
   const navigation = useNavigation();
-  console.log(route.params.image);
+
   return (
     <View style={styles.container}>
       <View style={styles.layer}>
@@ -71,7 +71,7 @@ const JobDetails = props => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.buttonBack}
-          onPress={() => navigation.navigate('MainMessenger')}>
+          onPress={() => navigation.navigate('DirectMessenger', route.params)}>
           <ChatIcon color="rgb(238,49,40)" />
           <Text style={styles.buttonBackText}> Nhắn tin</Text>
         </TouchableOpacity>

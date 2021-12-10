@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import MainMessenger from '../src/Messenger/Main';
+import DirectMessenger from '../src/Messenger/DirectMessenger';
 import {scale} from 'react-native-size-matters';
 import {View, Text, StyleSheet} from 'react-native';
 import {BackIcon, CheckMenu} from '../svg/icon';
@@ -31,7 +32,16 @@ function StackMessenger() {
         name="MainMessenger"
         component={MainMessenger}
         options={{
-          headerTitle: (props) => <LogoTitle text="Tin nhắn" />,
+          headerTitle: props => <LogoTitle text="Tin nhắn" />,
+          headerLeft: () => <BackIcon color={'black'} />,
+          headerRight: () => <CheckMenu color={'black'} />,
+        }}
+      />
+      <Stack.Screen
+        name="DirectMessenger"
+        component={DirectMessenger}
+        options={{
+          headerTitle: props => <LogoTitle text="Tin nhắn" />,
           headerLeft: () => <BackIcon color={'black'} />,
           headerRight: () => <CheckMenu color={'black'} />,
         }}

@@ -10,6 +10,7 @@ import JobDetails from '../src/homepage/JobDetails';
 import InforJob from '../src/homepage/InforJob';
 import InforCty from '../src/homepage/InforCty';
 import MainMessenger from '../src/Messenger/Main';
+import DirectMessenger from '../src/Messenger/DirectMessenger';
 import MainNotification from '../src/notification/Main';
 import SendCv from '../src/homepage/SendCv';
 import {DrawerContent} from '../src/homepage/DrawerContent';
@@ -53,7 +54,7 @@ function StackHomepage({navigation, route}) {
         name="JobDetails"
         component={JobDetails}
         options={{
-          headerTitle: (props) => <LogoTitle text="Chi tiết việc làm" />,
+          headerTitle: props => <LogoTitle text="Chi tiết việc làm" />,
           headerBackImage: () => <BackIcon color={'black'} />,
         }}
       />
@@ -61,7 +62,16 @@ function StackHomepage({navigation, route}) {
         name="MainMessenger"
         component={MainMessenger}
         options={{
-          headerTitle: (props) => <LogoTitle text="Tin nhắn" />,
+          headerTitle: props => <LogoTitle text="Tin nhắn" />,
+          headerBackImage: () => <BackIcon color={'black'} />,
+          headerRight: () => <CheckMenu color={'black'} />,
+        }}
+      />
+      <Stack.Screen
+        name="DirectMessenger"
+        component={DirectMessenger}
+        options={{
+          headerTitle: props => <LogoTitle text="Tin nhắn" />,
           headerBackImage: () => <BackIcon color={'black'} />,
           headerRight: () => <CheckMenu color={'black'} />,
         }}
@@ -70,7 +80,7 @@ function StackHomepage({navigation, route}) {
         name="MainNotification"
         component={MainNotification}
         options={{
-          headerTitle: (props) => <LogoTitle text="Thông báo" />,
+          headerTitle: props => <LogoTitle text="Thông báo" />,
           headerLeft: () => <BackIcon color={'black'} />,
           headerRight: () => <CheckMenu color={'black'} />,
         }}
@@ -79,7 +89,7 @@ function StackHomepage({navigation, route}) {
         name="SendCv"
         component={SendCv}
         options={{
-          headerTitle: (props) => <LogoTitle text="Ứng tuyển" />,
+          headerTitle: props => <LogoTitle text="Ứng tuyển" />,
           headerBackImage: () => <BackIcon color={'black'} />,
         }}
       />
@@ -88,7 +98,7 @@ function StackHomepage({navigation, route}) {
         name="ChangePass"
         component={ChangePass}
         options={{
-          headerTitle: (props) => <LogoTitle text="Đổi mật khẩu" />,
+          headerTitle: props => <LogoTitle text="Đổi mật khẩu" />,
           headerBackImage: () => <BackIcon color={'black'} />,
         }}
       />
