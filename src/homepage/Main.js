@@ -130,15 +130,15 @@ const MainHomepage = () => {
       <View style={styles.container}>
         <TouchableOpacity
           style={[styles.itemNew, {backgroundColor}]}
-          onPress={() =>
-            navigation.navigate('JobDetails', item)
-          }>
+          onPress={() => navigation.navigate('JobDetails', item)}>
           <View style={styles.layer}>
             <View style={styles.imageNew}>
               <Image
                 style={styles.image}
                 source={{
-                  uri: `http://192.168.1.5:4000/uploads/post/${item.image}`,
+                  uri: `http://${
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                  }:4000/uploads/post/${item.image}`,
                 }}
               />
             </View>

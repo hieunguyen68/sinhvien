@@ -44,7 +44,9 @@ const JobDetails = props => {
           <Image
             style={styles.image}
             source={{
-              uri: `http://192.168.1.5:4000/uploads/post/${route.params.image}`,
+              uri: `http://${
+                Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+              }:4000/uploads/post/${route.params.image}`,
             }}
           />
         </View>
@@ -77,7 +79,7 @@ const JobDetails = props => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonNext}
-          onPress={() => navigation.navigate('SendCv')}>
+          onPress={() => navigation.navigate('SendCv', route.params)}>
           <Text style={styles.buttonNextText}>Ứng tuyển ngay</Text>
         </TouchableOpacity>
       </View>

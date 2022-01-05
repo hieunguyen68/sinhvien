@@ -20,14 +20,17 @@ import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 import {CameraIcon, CheckIcon} from '../../svg/icon';
 import * as ImagePicker from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 import TitleBar from '../components/TitleBar';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getEndpoint, formatDate} from '../utils';
 
 const EditProfile = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const [date, setDate] = useState(new Date(route.params.birth));
-  const [birthday, setBirthday] = useState(route.params.birth);
+  const [date, setDate] = useState(new Date(formatDate(route.params.birthday)));
+  const [birthday, setBirthday] = useState(route.params.birthday);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [gender, setGender] = useState(route.params.gender);
@@ -39,70 +42,69 @@ const EditProfile = () => {
   const [careergoals, setCareergoals] = useState(route.params.careergoals);
 
   const [name, setName] = useState(route.params.name);
-  const [avatar, setAvatar] = useState(route.params.avatar);
+  const [avatar, setAvatar] = useState();
+  const [avatarUri, setAvatarUri] = useState(route.params.avatar);
   const [place, setPlace] = useState(route.params.place);
-  const [imageSource, setImageSource] = useState(null);
-  const [UrlAvatar, setUrlAvatar] = useState(
-    'http://elearning.tmgs.vn' + route.params.avatar,
-  );
+  const [cv, setCv] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(imageSource);
-  const UploadAvatar = async (data) => {
-    await axios
-      .post(
-        'https://elearning.tmgs.vn/api/user/font/image/base64',
-        {
-          base64: data,
-          name: 'avatar.png',
-          extension: 'png',
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${route.params.UserToken}`,
-          },
-        },
-      )
-      .then((response) => {
-        console.log(response);
-        setAvatar(response.data.data.src);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
+
+  const selectFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
       });
+      setCv(res[0]);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        alert('Canceled');
+      } else {
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
   };
+
   const sendUpdateData = async () => {
-    await axios
-      .post(
-        'https://elearning.tmgs.vn/api/profile/update',
-        {
-          email: email,
-          place: place,
-          phoneNumber: phone,
-          fullName: name,
-          gender: gender,
-          imageUsers: avatar,
-          birthday: birthday,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${route.params.UserToken}`,
-          },
-        },
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(() => {
-        console.log('finally');
+    try {
+      let user = await AsyncStorage.getItem('user');
+      user = JSON.parse(user);
+      const data = new FormData();
+      console.log(user.id);
+      data.append('id', user.id);
+      console.log(birthday);
+      // if (birthday) data.append('birthday', birthday);
+      if (gender) data.append('gender', gender);
+      if (email) data.append('email', email);
+      if (phone) data.append('phone', phone);
+      if (company) data.append('company', company);
+      if (skill) data.append('skill', skill);
+      if (degree) data.append('degree', degree);
+      if (careergoals) data.append('careergoals', careergoals);
+      if (name) data.append('name', name);
+      if (place) data.append('place', place);
+      if (cv) data.append('cv', cv);
+      if (avatar) {
+        data.append('avatar', {
+          name: avatar.fileName,
+          type: avatar.type,
+          uri:
+            Platform.OS === 'android'
+              ? avatar.uri
+              : avatar.uri.replace('file://', ''),
+        });
+      }
+      await axios({
+        method: 'put',
+        url: `${getEndpoint(Platform.OS)}/users`,
+        data: data,
+        headers: {'Content-Type': 'multipart/form-data'},
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
-    setBirthday(date.getTime());
+    setBirthday(date);
   }, [date]);
 
   const onChange = (event, selectedDate) => {
@@ -111,7 +113,7 @@ const EditProfile = () => {
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
+  const showMode = currentMode => {
     setShow(true);
     setMode(currentMode);
   };
@@ -120,24 +122,14 @@ const EditProfile = () => {
     showMode('date');
   };
 
-  const showTimepicker = () => {
-    showMode('time');
-  };
-
   function selectImage() {
     let options = {
       title: 'You can choose one image',
-      maxWidth: 256,
-      maxHeight: 256,
-      noData: true,
       mediaType: 'photo',
-      storageOptions: {
-        skipBackup: true,
-      },
-      includeBase64: true,
+      noData: true,
     };
 
-    ImagePicker.launchImageLibrary(options, (response) => {
+    ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
         console.log('User cancelled photo picker');
         Alert.alert('You did not select any image');
@@ -146,13 +138,12 @@ const EditProfile = () => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        let source = {uri: response.uri};
-        UploadAvatar(response.base64);
-        // ADD THIS
-        setUrlAvatar(source.uri);
+        console.log(response);
+        setAvatar(response);
       }
     });
   }
+
   return (
     <View style={styles.container}>
       <TitleBar title1={'Cập nhật thông tin cá nhân'} />
@@ -161,14 +152,16 @@ const EditProfile = () => {
           blurRadius={2}
           style={styles.bigAvatar}
           source={{
-            uri: UrlAvatar,
+            uri: '',
           }}>
           <View style={styles.avatarContainer}>
             <View style={styles.circle}>
               <ImageBackground
                 style={styles.logo}
                 source={{
-                  uri: UrlAvatar,
+                  uri: `http://${
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                  }:4000/uploads/avatar/${avatarUri}`,
                 }}>
                 <TouchableOpacity
                   style={styles.changeAvatarBut}
@@ -183,7 +176,7 @@ const EditProfile = () => {
           <View style={styles.nameInput}>
             <TextInput
               value={name}
-              onChangeText={(nameinput) => setName(nameinput)}
+              onChangeText={nameinput => setName(nameinput)}
               placeholderTextColor={'#cecece'}
               placeholder={name}
               style={styles.inputText}>
@@ -201,7 +194,7 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={email}
-                    onChangeText={(emailinput) => setEmail(emailinput)}
+                    onChangeText={emailinput => setEmail(emailinput)}
                     placeholder={email}
                     style={styles.textInput}
                   />
@@ -212,7 +205,7 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={phone}
-                    onChangeText={(phoneinput) => setPhone(phoneinput)}
+                    onChangeText={phoneinput => setPhone(phoneinput)}
                     placeholder={phone}
                     style={styles.textInput}
                   />
@@ -223,7 +216,7 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={place}
-                    onChangeText={(placeinput) => setPlace(placeinput)}
+                    onChangeText={placeinput => setPlace(placeinput)}
                     placeholder={place}
                     style={styles.textInput}
                   />
@@ -258,7 +251,7 @@ const EditProfile = () => {
                     <Picker
                       itemStyle={styles.textInput}
                       selectedValue={gender}
-                      onValueChange={(itemValue) => setGender(itemValue)}
+                      onValueChange={itemValue => setGender(itemValue)}
                       style={styles.GenderChoice}>
                       <Picker.Item label="-" value="3" />
                       <Picker.Item label="Nam" value="1" />
@@ -272,7 +265,7 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={company}
-                    onChangeText={(companyinput) => setCompany(companyinput)}
+                    onChangeText={companyinput => setCompany(companyinput)}
                     placeholder={company}
                     style={styles.textInput}
                   />
@@ -283,7 +276,7 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={skill}
-                    onChangeText={(skillinput) => setSkill(skillinput)}
+                    onChangeText={skillinput => setSkill(skillinput)}
                     placeholder={skill}
                     style={styles.textInput}
                   />
@@ -295,7 +288,7 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={degree}
-                    onChangeText={(degreeinput) => setDegree(degreeinput)}
+                    onChangeText={degreeinput => setDegree(degreeinput)}
                     placeholder={degree}
                     style={styles.textInput}
                   />
@@ -307,13 +300,20 @@ const EditProfile = () => {
                 <View style={styles.emailBox}>
                   <TextInput
                     value={careergoals}
-                    onChangeText={(careergoalsinput) =>
+                    onChangeText={careergoalsinput =>
                       setCareergoals(careergoalsinput)
                     }
                     placeholder={phone}
                     style={styles.textInput}
                   />
                 </View>
+              </View>
+
+              <View style={styles.EmailInput}>
+                <Text style={styles.title}>Tải CV từ điện thoại: </Text>
+                <TouchableOpacity activeOpacity={0.5} onPress={selectFile}>
+                  <Text style={styles.text3}>Tải lên</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -430,6 +430,12 @@ const styles = StyleSheet.create({
     fontSize: scale(18),
     color: '#fff',
   },
+  text3: {
+    color: 'rgb(0,190,90)',
+    fontSize: scale(16),
+    marginLeft: scale(15),
+    textDecorationLine: 'underline',
+  },
   nameInput: {
     marginTop: scale(10),
     justifyContent: 'flex-end',
@@ -455,6 +461,7 @@ const styles = StyleSheet.create({
   EmailInput: {
     height: scale(70),
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   emailBox: {
     height: scale(40),

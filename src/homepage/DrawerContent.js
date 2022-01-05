@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, Platform} from 'react-native';
 import {
   useTheme,
   Avatar,
@@ -13,7 +13,6 @@ import {
   Switch,
 } from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {AuthContext} from '../../components/context';
@@ -55,7 +54,9 @@ export function DrawerContent({props, navigation}) {
             <View style={{flexDirection: 'row', marginTop: 15}}>
               <Avatar.Image
                 source={{
-                  uri: `http://192.168.1.5:4000/uploads/avatar/${user.avatar}`,
+                  uri: `http://${
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                  }:4000/uploads/avatar/${user.avatar}`,
                 }}
                 size={50}
               />

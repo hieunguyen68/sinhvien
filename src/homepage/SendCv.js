@@ -10,6 +10,8 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
+  Platform,
+  Alert,
 } from 'react-native';
 import {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -17,70 +19,34 @@ import {scale} from 'react-native-size-matters';
 import {TextInput} from 'react-native-gesture-handler';
 import DocumentPicker from 'react-native-document-picker';
 import LinearGradient from 'react-native-linear-gradient';
+import {getEndpoint} from '../utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-const SendCv = (props) => {
+const SendCv = props => {
   const navigation = useNavigation();
-  const UselessTextInput = (props) => {
-    return (
-      <TextInput
-        {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-        editable
-        maxLength={1000}
-      />
-    );
-  };
+  const route = useRoute();
+  console.log(route.params);
+  const [file, setFile] = useState(null);
 
-  const UselessTextInputMultiline = () => {
-    const [value, onChangeText] = React.useState('');
-
-    // If you type something in the text box that is a color, the background will change to that
-    // color.
-    return (
-      <View
-        style={{
-          height: scale(200),
-          width: '80%',
-          margin: 20,
-          borderWidth: 1 / 2,
-          padding: 10,
-          borderBottomColor: '#000000',
-          fontSize: 14,
-        }}>
-        <UselessTextInput
-          multiline
-          numberOfLines={10}
-          onChangeText={(text) => onChangeText(text)}
-          value={value}
-          placeholder="Giới thiệu ngắn gọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ lý do, mong muốn làm việc tại công ty này."
-          style={{padding: 1}}
-        />
-      </View>
-    );
-  };
-  const [singleFile, setSingleFile] = useState(null);
-  const uploadImage = async () => {
-    // Check if any file is selected or not
-    if (singleFile != null) {
-      // If file selected then create FormData
-      const fileToUpload = singleFile;
+  const onSubmit = async () => {
+    try {
+      let user = await AsyncStorage.getItem('user');
+      user = JSON.parse(user);
       const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
-      // Please change file upload URL
-      let res = await fetch('http://localhost/upload.php', {
+      console.log(file);
+      data.append('cv', file);
+      data.append('_id', route.params._id);
+      data.append('userId', user.id);
+      await axios({
         method: 'post',
-        body: data,
-        headers: {
-          'Content-Type': 'multipart/form-data; ',
-        },
+        url: `${getEndpoint(Platform.OS)}/users/apply`,
+        data: data,
+        headers: {'Content-Type': 'multipart/form-data'},
       });
-      let responseJson = await res.json();
-      if (responseJson.status == 1) {
-        alert('Upload Successful');
-      }
-    } else {
-      // If no file selected the show alert
-      alert('Please Select File first');
+      Alert.alert('Ứng tuyển thành công');
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -98,11 +64,9 @@ const SendCv = (props) => {
         // DocumentPicker.types.pdf
       });
       // Printing the log realted to the file
-      console.log('res : ' + JSON.stringify(res));
       // Setting the state to show single file attributes
-      setSingleFile(res);
+      setFile(res[0]);
     } catch (err) {
-      setSingleFile(null);
       // Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
         // If user canceled the document selection
@@ -128,7 +92,7 @@ const SendCv = (props) => {
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
-          onPress={uploadImage}>
+          onPress={onSubmit}>
           <LinearGradient
             colors={['rgb(254,193,13)', 'rgb(238,49,40)']}
             style={styles.signIn}>
@@ -143,21 +107,6 @@ const SendCv = (props) => {
             </Text>
           </LinearGradient>
         </TouchableOpacity>
-      </View>
-      <View style={styles.mainBody}>
-        {/*Showing the data of selected Single file*/}
-        {singleFile != null ? (
-          <Text style={styles.textStyle}>
-            File Name: {singleFile.name ? singleFile.name : ''}
-            {'\n'}
-            Type: {singleFile.type ? singleFile.type : ''}
-            {'\n'}
-            File Size: {singleFile.size ? singleFile.size : ''}
-            {'\n'}
-            URI: {singleFile.uri ? singleFile.uri : ''}
-            {'\n'}
-          </Text>
-        ) : null}
       </View>
     </View>
   );

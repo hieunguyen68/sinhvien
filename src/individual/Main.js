@@ -16,13 +16,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
 import {ScrollView} from 'react-native-gesture-handler';
+import {formatDate} from '../utils';
 
 const MainIndividual = () => {
-  const route = useRoute();
-  const [dataHistory, setDataHistory] = useState([]);
-  const [dataUser, setDataUser] = useState([]);
-  const [token, setToken] = useState('');
-  const [count, setCount] = useState(0);
   const navigation = useNavigation();
   const [user, setUser] = useState({});
 
@@ -45,7 +41,9 @@ const MainIndividual = () => {
           <Image
             style={styles.logo}
             source={{
-              uri: `http://192.168.1.5:4000/uploads/avatar/${user.avatar}`,
+              uri: `http://${
+                Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+              }:4000/uploads/avatar/${user.avatar}`,
             }}
           />
         </View>
@@ -59,9 +57,6 @@ const MainIndividual = () => {
               <View style={styles.leftLine} />
 
               <Text style={styles.textLeft}>Mã Sinh Viên</Text>
-              <View style={styles.leftLine} />
-
-              <Text style={styles.textLeft}>Lớp</Text>
               <View style={styles.leftLine} />
 
               <Text style={styles.textLeft}>Ngày Sinh</Text>
@@ -98,10 +93,7 @@ const MainIndividual = () => {
               <Text style={styles.textLeft}>{user.id}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{user.class}</Text>
-              <View style={styles.rightLine} />
-
-              <Text style={styles.textLeft}>{user.birthday}</Text>
+              <Text style={styles.textLeft}>{formatDate(user.birthday)}</Text>
               <View style={styles.rightLine} />
 
               <Text style={styles.textLeft}>{user.gender}</Text>
@@ -133,23 +125,7 @@ const MainIndividual = () => {
         <View style={styles.line} />
         <TouchableOpacity
           style={styles.button1}
-          onPress={() =>
-            navigation.navigate('EditProfile', {
-              avatar: dataUser.avatar,
-              name: dataUser.name,
-              MaSv: dataUser.MaSv,
-              class: dataUser.class,
-              phone: dataUser.phone,
-              email: dataUser.email,
-              gender: dataUser.gender,
-              place: dataUser.place,
-              birth: dataUser.birth,
-              skill: dataUser.skill,
-              degree: dataUser.degree,
-              careergoals: dataUser.careergoals,
-              UserToken: dataUser.UserTK,
-            })
-          }>
+          onPress={() => navigation.navigate('EditProfile', user)}>
           <LinearGradient
             colors={['rgb(254,193,13)', 'rgb(238,49,40)']}
             style={styles.signIn}>
