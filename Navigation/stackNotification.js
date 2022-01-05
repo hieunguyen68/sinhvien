@@ -5,6 +5,7 @@ import {scale} from 'react-native-size-matters';
 import MainNotification from '../src/notification/Main';
 import {View, Text, StyleSheet, Alert} from 'react-native';
 import {BackIcon, CheckMenu} from '../svg/icon';
+import SeeNotification from '../src/notification/SeeNotification';
 
 const Stack = createStackNavigator();
 
@@ -32,8 +33,16 @@ function StackNotification({navigation, route}) {
         component={MainNotification}
         options={{
           headerTitle: (props) => <LogoTitle text="Thông báo" />,
-          headerLeft: () => <BackIcon color={'black'} />,
-          headerRight: () => <CheckMenu color={'black'} />,
+          // headerLeft: () => <BackIcon color={'black'} />,
+          // headerRight: () => <CheckMenu color={'black'} />,
+        }}
+      />
+      <Stack.Screen
+        name="SeeNotification"
+        component={SeeNotification}
+        options={{
+          headerTitle: props => <LogoTitle text="Nội dung thông báo" />,
+          headerBackImage: () => <BackIcon color={'black'} />,
         }}
       />
     </Stack.Navigator>
@@ -44,7 +53,7 @@ export default StackNotification;
 const styles = StyleSheet.create({
   topTittle: {
     fontSize: scale(20),
-    marginLeft: scale(40),
+    marginLeft: "20%",
     color: 'black',
     alignItems: 'center',
   },

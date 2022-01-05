@@ -33,8 +33,8 @@ function StackMessenger() {
         component={MainMessenger}
         options={{
           headerTitle: props => <LogoTitle text="Tin nhắn" />,
-          headerLeft: () => <BackIcon color={'black'} />,
-          headerRight: () => <CheckMenu color={'black'} />,
+          // headerLeft: () => <BackIcon color={'black'} />,
+          // headerRight: () => <CheckMenu color={'black'} />,
         }}
       />
       <Stack.Screen
@@ -42,7 +42,7 @@ function StackMessenger() {
         component={DirectMessenger}
         options={{
           headerTitle: props => <LogoTitle text="Tin nhắn" />,
-          headerLeft: () => <BackIcon color={'black'} />,
+          headerBackImage: () => <BackIcon color={'black'} />,
           headerRight: () => <CheckMenu color={'black'} />,
         }}
       />

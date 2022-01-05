@@ -89,8 +89,9 @@ const SendCv = (props) => {
     try {
       const res = await DocumentPicker.pick({
         // Provide which type of file you want user to pick
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.pdf],
         // There can me more options as well
+        // DocumentPicker.types.allFiles
         // DocumentPicker.types.allFiles
         // DocumentPicker.types.images
         // DocumentPicker.types.plainText
@@ -148,7 +149,7 @@ const SendCv = (props) => {
         {/*Showing the data of selected Single file*/}
         {singleFile != null ? (
           <Text style={styles.textStyle}>
-            File Name: {singleFile.name ? singleFile.name : ''}
+            File Name: {singleFile.name ? singleFile.name : 'aaaa'}
             {'\n'}
             Type: {singleFile.type ? singleFile.type : ''}
             {'\n'}
@@ -247,6 +248,7 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     textAlign: 'center',
+    color: 'black',
   },
   signIn: {
     width: '100%',
