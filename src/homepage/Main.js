@@ -53,77 +53,7 @@ const MainHomepage = () => {
     }
   };
 
-  // const DATA = [
-  //   {
-  //     id: '1',
-  //     image: (
-  //       <Image
-  //         style={styles.image}
-  //         source={require('../../img/cooftech.webp')}
-  //       />
-  //     ),
-  //     title: 'Business Analyst Lương Upto 25M',
-  //     companyName: 'Công Ty Cổ Phần Công Nghệ SOPEN Việt Nam',
-  //     companyPalace: 'Hà Nội',
-  //     pay: 'Tới 25 triệu',
-  //     date: '09/11/2021',
-  //     khuvuc:
-  //       'Tầng 7 sảnh A3 tòa Ecolife Capitol 58 Tố Hữu , Trung Văn, Hà Nội',
-  //     hinhthuc: 'Toàn thời gian',
-  //     soluong: '2 người',
-  //     gioitinh: 'không yêu cầu',
-  //     chucvu: 'Nhân viên',
-  //     kinhnghiem: 'Dưới 1 năm',
-  //     motacv:
-  //       'Thiết kế, phát triển và tối ưu hóa hiệu suất của các sản phẩm trên Mobile App',
-  //     yeucaucv: 'Tốt nghiệp ĐH trở lên, ưu tiên chuyên ngành CNTT.',
-  //     quyenloicv:
-  //       'Cơ hội học hỏi và phát triển, tiếp cận và áp dụng các công nghệ mới.',
-  //   },
-  //   {
-  //     id: '2',
-  //     image: (
-  //       <Image
-  //         style={styles.image}
-  //         source={require('../../img/cooftech.webp')}
-  //       />
-  //     ),
-  //     title: 'Mobile Developer - Flutter (Upto $1500)',
-  //     companyName: 'Công Ty Cổ Phần Cooftech',
-  //     companyPalace: 'Hà Nội',
-  //     pay: 'Tới 30 triệu',
-  //     date: '10/11/2021',
-  //   },
-  //   {
-  //     id: '3',
-  //     image: (
-  //       <Image
-  //         style={styles.image}
-  //         source={require('../../img/cooftech.webp')}
-  //       />
-  //     ),
-  //     title: 'Lập Trình Viên PHP - Mobile Game Lương Upto 18M',
-  //     companyName: 'Công Ty TNHH Ambition Việt Nam',
-  //     companyPalace: 'Hồ Chí Minh',
-  //     pay: '18-20 triệu',
-  //     date: '30/11/2021',
-  //   },
-  //   {
-  //     id: '4',
-  //     image: (
-  //       <Image
-  //         style={styles.image}
-  //         source={require('../../img/cooftech.webp')}
-  //       />
-  //     ),
-  //     title:
-  //       'IOS Deverlopers (Objectivec, Swift) Thực Tập Sinh Có Thể Ứng Tuyển',
-  //     companyName: 'Công Ty Cổ Phần Solar Việt Nam',
-  //     companyPalace: 'Hà Nội',
-  //     pay: 'Tới 40 triệu',
-  //     date: '15/11/2021',
-  //   },
-  // ];
+
   const renderItem = ({item}) => {
     const backgroundColor = item.id === newsID ? '#2C2F2E' : 'white';
     return (

@@ -28,40 +28,16 @@ const StackMessenger = props => {
       id: 1,
       avatar:
         'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
-      name: 'Crush số 1',
-      description: 'Crush số 1 waved at you!',
+      name: 'Hằng',
+      description: 'Can I help you?',
     },
     {
       id: 2,
       avatar:
         'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
-      name: 'Crush số 8',
+      name: 'Huyền',
       description:
-        'Anh muốn tặng em trái tim này và em hãy giữ nó, bởi anh rất vụng về, anh sợ rằng anh sẽ làm mất hoặc dễ dàng tặng nó cho một ai khác',
-    },
-    {
-      id: 3,
-      avatar:
-        'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
-      name: 'Crush số 9',
-      description:
-        'Nếu em dám, hãy nắm lấy tay anh và dẫn anh đến trái tim của em. Anh muốn cảm nhận tình yêu của em.',
-    },
-    {
-      id: 4,
-      avatar:
-        'https://pbs.twimg.com/profile_images/652669289326092288/RsXc7UnS_400x400.jpg',
-      name: 'Crush số 10',
-      description:
-        'Anh thức dậy vào mỗi buổi sáng với sự phấn khích của một đứa trẻ vào ngày Giáng sinh, chỉ để biết rằng anh vẫn ở cạnh em.',
-    },
-    {
-      id: 5,
-      avatar:
-        'https://bellanyc.com/wp-content/uploads/2017/06/blake-lively.jpg',
-      name: 'Crush số 3',
-      description:
-        'Em là nguồn cảm hứng đằng sau tất cả những gì anh làm, làm nguồn gốc của những điều tốt lành trong cuộc sống của anh',
+        'Hẹn bạn phỏng vấn vòa 9h ngày 12/11/2021 tại công ty',
     },
   ];
 
@@ -126,9 +102,6 @@ const StackMessenger = props => {
 
   return (
     <View style={styles.wrapper}>
-      <View>
-        <Text style={styles.title}>My Crush</Text>
-      </View>
       <FlatList
         data={data}
         keyExtractor={item => item._id}

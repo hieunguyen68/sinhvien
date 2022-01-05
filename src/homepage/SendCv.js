@@ -55,8 +55,9 @@ const SendCv = props => {
     try {
       const res = await DocumentPicker.pick({
         // Provide which type of file you want user to pick
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.pdf],
         // There can me more options as well
+        // DocumentPicker.types.allFiles
         // DocumentPicker.types.allFiles
         // DocumentPicker.types.images
         // DocumentPicker.types.plainText
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     textAlign: 'center',
+    color: 'black',
   },
   signIn: {
     width: '100%',
