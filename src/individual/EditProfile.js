@@ -43,7 +43,11 @@ const EditProfile = () => {
 
   const [name, setName] = useState(route.params.name);
   const [avatar, setAvatar] = useState();
-  const [avatarUri, setAvatarUri] = useState(route.params.avatar);
+  const [avatarUri, setAvatarUri] = useState(
+    `http://${
+      Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+    }:4000/uploads/avatar/${route.params.avatar}`,
+  );
   const [place, setPlace] = useState(route.params.place);
   const [cv, setCv] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -71,7 +75,7 @@ const EditProfile = () => {
       const data = new FormData();
       console.log(user.id);
       data.append('id', user.id);
-      console.log(birthday);
+      console.log(avatar);
       // if (birthday) data.append('birthday', birthday);
       if (gender) data.append('gender', gender);
       if (email) data.append('email', email);
@@ -126,7 +130,12 @@ const EditProfile = () => {
     let options = {
       title: 'You can choose one image',
       mediaType: 'photo',
-      noData: true,
+      includeBase64: true,
+      maxWidth: 10000,
+      maxHeight: 10000,
+      storageOptions: {
+        skipBackup: true,
+      },
     };
 
     ImagePicker.launchImageLibrary(options, response => {
@@ -140,6 +149,7 @@ const EditProfile = () => {
       } else {
         console.log(response);
         setAvatar(response);
+        setAvatarUri('data:image/jpeg;base64,' + response.base64);
       }
     });
   }
@@ -152,16 +162,14 @@ const EditProfile = () => {
           blurRadius={2}
           style={styles.bigAvatar}
           source={{
-            uri: '',
+            uri: avatarUri,
           }}>
           <View style={styles.avatarContainer}>
             <View style={styles.circle}>
               <ImageBackground
                 style={styles.logo}
                 source={{
-                  uri: `http://${
-                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
-                  }:4000/uploads/avatar/${avatarUri}`,
+                  uri: avatarUri,
                 }}>
                 <TouchableOpacity
                   style={styles.changeAvatarBut}
@@ -179,9 +187,7 @@ const EditProfile = () => {
               onChangeText={nameinput => setName(nameinput)}
               placeholderTextColor={'#cecece'}
               placeholder={name}
-              style={styles.inputText}>
-              Nguyễn Văn A
-            </TextInput>
+              style={styles.inputText}></TextInput>
           </View>
         </ImageBackground>
       </View>
