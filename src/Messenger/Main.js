@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
+  Platform,
 } from 'react-native';
 import {
   NavigationContainer,
@@ -14,47 +15,46 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import Swipeout from 'react-native-swipeout';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+// import Icon from 'react-natiuve-vector-icons/FontAwesome5';
 import {Can} from '../../svg/icon';
 const {width} = Dimensions.get('window');
+import {getEndpoint} from '../utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const StackMessenger = props => {
   console.log(props);
   const route = useRoute();
   const navigation = useNavigation();
+  const [data, setData] = useState([]);
 
-  const data = [
-    {
-      id: 1,
-      avatar:
-        'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
-      name: 'Hằng',
-      description: 'Can I help you?',
-    },
-    {
-      id: 2,
-      avatar:
-        'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
-      name: 'Huyền',
-      description:
-        'Hẹn bạn phỏng vấn vòa 9h ngày 12/11/2021 tại công ty',
-    },
-  ];
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      let user = await AsyncStorage.getItem('user');
+      user = JSON.parse(user);
+      const res = await axios.get(
+        `${getEndpoint(Platform.OS)}/users/message/users/${user.id}`,
+      );
+      setData(
+        res.data.map(i => ({
+          id: i._id,
+          avatar:
+            'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
+          name: i.hrName,
+          description: i.content,
+          hrEmail: i.hrEmail,
+        })),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const renderItem = ({item}) => {
-    //     constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         activeRowKey: null, //set item active
-    //         numberOfRefresh: 0,
-    //     };
-    // }
-    // const item = this.props;
-    // _onOpen = () => {
-    //   this.setState({
-    //     activeRowKey: item.item.key,
-    //   });
-    // };
     _onClose = () => {
       if (this.state.activeRowKey != null) {
         this.setState({
@@ -63,12 +63,6 @@ const StackMessenger = props => {
       }
     };
     var swipeSettings = [
-      // autoClose: true, //sẽ tự động đóng khi ta click vào buton nào đó trong item được swipe
-      // onOpen: this._onOpen, //khi open swipe thì nên set row nào được active để tránh nhầm lẫn khi ta click sự kiện bên trong các item.
-      // onClose: this._onClose, //xóa row active
-
-      //tiếp theo ta sẽ làm swipe phía bên trái
-
       {
         onPress: ({}) => {},
         component: (
@@ -82,7 +76,9 @@ const StackMessenger = props => {
     return (
       <Swipeout right={swipeSettings} backgroundColor="white">
         <TouchableOpacity
-          onPress={() => navigation.navigate('DirectMessenger', route.params)}>
+          onPress={() =>
+            navigation.navigate('DirectMessenger', {hrEmail: item.hrEmail})
+          }>
           <View style={styles.container}>
             <View style={styles.bgAvatar}>
               <Image source={{uri: item.avatar}} style={styles.avatar} />

@@ -83,7 +83,6 @@ const DirectMessenger = props => {
 
   return (
     <View style={styles.container}>
-    <Text>aaaaaa</Text>
       <ScrollView
         ref={ref => {
           this.scrollView = ref;
@@ -174,7 +173,6 @@ const styles = StyleSheet.create({
   FlatList: {
     padding: scale(10),
     width: '100%',
-    
   },
   txtLessonC: {color: '#144E8C'},
   message: {
