@@ -55,7 +55,7 @@ export function DrawerContent({props, navigation}) {
               <Avatar.Image
                 source={{
                   uri: `http://${
-                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
                   }:4000/uploads/avatar/${user.avatar}`,
                 }}
                 size={50}

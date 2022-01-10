@@ -45,7 +45,7 @@ const JobDetails = props => {
             style={styles.image}
             source={{
               uri: `http://${
-                Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
               }:4000/uploads/post/${route.params.image}`,
             }}
           />

@@ -33,19 +33,20 @@ const EditProfile = () => {
   const [birthday, setBirthday] = useState(route.params.birthday);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [address, setAddress] = useState(route.params.address);
   const [gender, setGender] = useState(route.params.gender);
   const [email, setEmail] = useState(route.params.email);
   const [phone, setPhone] = useState(route.params.phone);
   const [company, setCompany] = useState(route.params.company);
   const [skill, setSkill] = useState(route.params.skill);
   const [degree, setDegree] = useState(route.params.degree);
-  const [careergoals, setCareergoals] = useState(route.params.careergoals);
+  const [careerGoal, setCareergoal] = useState(route.params.careerGoal);
 
   const [name, setName] = useState(route.params.name);
   const [avatar, setAvatar] = useState();
   const [avatarUri, setAvatarUri] = useState(
     `http://${
-      Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+      Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
     }:4000/uploads/avatar/${route.params.avatar}`,
   );
   const [place, setPlace] = useState(route.params.place);
@@ -221,9 +222,9 @@ const EditProfile = () => {
                 <Text style={styles.title}>Địa chỉ</Text>
                 <View style={styles.emailBox}>
                   <TextInput
-                    value={place}
-                    onChangeText={placeinput => setPlace(placeinput)}
-                    placeholder={place}
+                    value={address}
+                    onChangeText={addressinput => setAddress(addressinput)}
+                    placeholder={address}
                     style={styles.textInput}
                   />
                 </View>
@@ -305,11 +306,11 @@ const EditProfile = () => {
                 <Text style={styles.title}>Mục tiêu nghề nghiệp</Text>
                 <View style={styles.emailBox}>
                   <TextInput
-                    value={careergoals}
-                    onChangeText={careergoalsinput =>
-                      setCareergoals(careergoalsinput)
+                    value={careerGoal}
+                    onChangeText={careergoalinput =>
+                      setCareergoal(careergoalinput)
                     }
-                    placeholder={phone}
+                    placeholder={careerGoal}
                     style={styles.textInput}
                   />
                 </View>

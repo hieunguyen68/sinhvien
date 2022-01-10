@@ -42,7 +42,7 @@ const MainIndividual = () => {
             style={styles.logo}
             source={{
               uri: `http://${
-                Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
               }:4000/uploads/avatar/${user.avatar}`,
             }}
           />
@@ -108,7 +108,7 @@ const MainIndividual = () => {
               <Text style={styles.textLeft}>{user.phone}</Text>
               <View style={styles.rightLine} />
 
-              <Text style={styles.textLeft}>{user.companyName}</Text>
+              <Text style={styles.textLeft}>{user.company}</Text>
               <View style={styles.rightLine} />
 
               <Text style={styles.textLeft}>{user.skill}</Text>
