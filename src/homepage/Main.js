@@ -67,7 +67,7 @@ const MainHomepage = () => {
                 style={styles.image}
                 source={{
                   uri: `http://${
-                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.5'
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
                   }:4000/uploads/post/${item.image}`,
                 }}
               />
@@ -82,7 +82,7 @@ const MainHomepage = () => {
                 </Text>
                 <View style={styles.iconAndText}>
                   <AuthorIcon />
-                  <Text style={styles.authorText}>{item.companyAddress}</Text>
+                  <Text style={styles.authorText}>{item.companyLocation}</Text>
                 </View>
                 <View style={styles.layer}>
                   <View style={styles.iconAndText}>

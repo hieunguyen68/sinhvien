@@ -54,7 +54,7 @@ const InforJob = props => {
             <View style={styles.iconAndText}>
               <AddressIcon />
               <Text style={styles.timeText3}>
-                Khu vực: {data.companyLocation}
+                Khu vực: {data.companyAddress}
               </Text>
             </View>
             <View style={styles.iconAndText}>
