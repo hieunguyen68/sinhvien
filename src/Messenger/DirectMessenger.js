@@ -26,7 +26,7 @@ const DirectMessenger = props => {
   const [first, setFirst] = useState(false);
   const route = useRoute();
   const {hrEmail} = route.params;
-  const [searchValue, setSearchValue] = useState('');
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     if (route.params && user) {
@@ -47,6 +47,23 @@ const DirectMessenger = props => {
       setFirst(true);
     }
   }, [user]);
+
+  const onSend = async () => {
+    try {
+      if (!input) return;
+      const res = await axios.post(`${getEndpoint(Platform.OS)}/message`, {
+        hrEmail,
+        userId: user.id,
+        content: input,
+        to: hrEmail,
+        from: user.id,
+      });
+      setInput('');
+      getDirectMessage();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getUser = async () => {
     const user = await AsyncStorage.getItem('user');
@@ -101,10 +118,12 @@ const DirectMessenger = props => {
         <TextInput
           style={styles.inputText}
           placeholder={'Aa'}
-          value={searchValue}
-          onChangeText={input => setSearchValue(input)}
+          value={input}
+          onChangeText={input => setInput(input)}
         />
-        <SendIcon style={{marginLeft: scale(10)}} />
+        <TouchableOpacity onPress={onSend}>
+          <SendIcon style={{marginLeft: scale(10)}} />
+        </TouchableOpacity>
       </View>
     </View>
   );
