@@ -23,7 +23,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const StackMessenger = props => {
-  console.log(props);
   const route = useRoute();
   const navigation = useNavigation();
   const [data, setData] = useState([]);
@@ -33,6 +32,7 @@ const StackMessenger = props => {
   }, []);
 
   const getData = async () => {
+
     try {
       let user = await AsyncStorage.getItem('user');
       user = JSON.parse(user);
@@ -43,7 +43,7 @@ const StackMessenger = props => {
         res.data.map(i => ({
           id: i._id,
           avatar:
-            'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
+            'http://192.168.1.11:4000/uploads/avatar/1234.jpg',
           name: i.hrName,
           description: i.content,
           hrEmail: i.hrEmail,
@@ -73,6 +73,8 @@ const StackMessenger = props => {
         backgroundColor: 'white',
       },
     ];
+    console.log(data);
+
     return (
       <Swipeout right={swipeSettings} backgroundColor="white">
         <TouchableOpacity
@@ -81,15 +83,21 @@ const StackMessenger = props => {
           }>
           <View style={styles.container}>
             <View style={styles.bgAvatar}>
+            {/* <Image
+            style={styles.avatar}
+            source={{
+              uri: `http://192.168.1.11:4000/uploads/avatar/${avatar}`,
+            }}
+          /> */}
               <Image source={{uri: item.avatar}} style={styles.avatar} />
             </View>
             <View style={styles.info}>
               <Text style={styles.name}>{item.name}</Text>
               <Text numberOfLines={1}>{item.description}</Text>
             </View>
-            <View style={styles.bgSeen}>
+            {/* <View style={styles.bgSeen}>
               <Image source={{uri: item.avatar}} style={styles.avatarSeen} />
-            </View>
+            </View> */}
           </View>
         </TouchableOpacity>
       </Swipeout>

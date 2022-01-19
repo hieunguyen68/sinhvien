@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  ImageBackground,
 } from 'react-native';
 
 import {scale} from 'react-native-size-matters';
@@ -36,17 +37,28 @@ const MainIndividual = () => {
   return (
     <View style={styles.container}>
       <TitleBar title1={'Trang cá nhân'} />
-      <View style={styles.avatarContainer}>
-        <View style={styles.circle}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: `http://${
-                Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
-              }:4000/uploads/avatar/${user.avatar}`,
-            }}
-          />
-        </View>
+      <View style={styles.Avatar}>
+        <ImageBackground
+          blurRadius={2}
+          style={styles.bigAvatar}
+          source={{
+            uri: `http://${
+              Platform.OS === 'ios' ? 'localhost' : '192.168.1.11'
+            }:4000/uploads/avatar/${user.avatar}`,
+          }}>
+          <View style={styles.avatarContainer}>
+            <View style={styles.circle}>
+              <Image
+                style={styles.logo}
+                source={{
+                  uri: `http://${
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.11'
+                  }:4000/uploads/avatar/${user.avatar}`,
+                }}
+              />
+            </View>
+          </View>
+        </ImageBackground>
       </View>
       <View style={styles.line} />
       <View>
@@ -145,6 +157,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
   },
+  Avatar: {
+    height: scale(220),
+    width: '150%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bigAvatar: {
+    height: scale(220),
+    width: '100%',
+    resizeMode: 'stretch',
+    alignItems: 'center',
+  },
   avatarContainer: {
     marginTop: scale(30),
     height: scale(120),
@@ -201,12 +225,12 @@ const styles = StyleSheet.create({
     height: scale(1 / 2),
   },
   button1: {
-    marginTop: scale(20),
+    marginTop: scale(10),
     width: scale(200),
     height: scale(45),
     alignSelf: 'center',
     borderRadius: scale(25),
-    marginBottom: scale(250),
+    marginBottom: scale(280),
     justifyContent: 'center',
     alignItems: 'center',
   },

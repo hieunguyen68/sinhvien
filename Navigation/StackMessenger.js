@@ -43,7 +43,6 @@ function StackMessenger() {
         options={{
           headerTitle: props => <LogoTitle text="Tin nhắn" />,
           headerBackImage: () => <BackIcon color={'black'} />,
-          headerRight: () => <CheckMenu color={'black'} />,
         }}
       />
     </Stack.Navigator>

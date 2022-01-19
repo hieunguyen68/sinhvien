@@ -26,7 +26,7 @@ import axios from 'axios';
 const SendCv = props => {
   const navigation = useNavigation();
   const route = useRoute();
-  console.log(route.params);
+  // console.log(route.params);
   const [file, setFile] = useState(null);
 
   const onSubmit = async () => {
@@ -89,6 +89,19 @@ const SendCv = props => {
           </TouchableOpacity>
         </View>
       </View>
+      {/*Showing the data of selected Single file*/}
+      {file != null ? (
+        <Text style={styles.textStyle}>
+          File Name: {file.name ? file.name : ''}
+          {'\n'}
+          Type: {file.type ? file.type : ''}
+          {'\n'}
+          File Size: {file.size ? file.size : ''}
+          {'\n'}
+          URI: {file.uri ? file.uri : ''}
+          {'\n'}
+        </Text>
+      ) : null}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.buttonStyle}
@@ -161,8 +174,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     color: 'black',
-    fontSize: scale(16),
-    fontWeight: 'bold',
+    fontSize: scale(14),
     marginLeft: scale(15),
     marginTop: scale(20),
   },

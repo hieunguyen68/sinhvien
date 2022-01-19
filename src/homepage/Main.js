@@ -67,7 +67,7 @@ const MainHomepage = () => {
                 style={styles.image}
                 source={{
                   uri: `http://${
-                    Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
+                    Platform.OS === 'ios' ? 'localhost' : '192.168.1.11'
                   }:4000/uploads/post/${item.image}`,
                 }}
               />
@@ -152,7 +152,7 @@ const MainHomepage = () => {
 
       <View style={styles.body}>
         <View style={styles.imgBlack} />
-        <ScrollView
+        <View
           contentContainerStyle={styles.body}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -163,7 +163,7 @@ const MainHomepage = () => {
             keyExtractor={item => item.id}
             renderItem={renderItem}
           />
-        </ScrollView>
+        </View>
       </View>
     </View>
   );

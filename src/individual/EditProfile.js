@@ -10,7 +10,7 @@ import {
   Alert,
   Modal,
   TextInput,
-  Button,
+  Image,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import Backbar from '../components/BackBar';
@@ -46,7 +46,7 @@ const EditProfile = () => {
   const [avatar, setAvatar] = useState();
   const [avatarUri, setAvatarUri] = useState(
     `http://${
-      Platform.OS === 'ios' ? 'localhost' : '192.168.0.106'
+      Platform.OS === 'ios' ? 'localhost' : '192.168.1.11'
     }:4000/uploads/avatar/${route.params.avatar}`,
   );
   const [place, setPlace] = useState(route.params.place);
@@ -84,7 +84,7 @@ const EditProfile = () => {
       if (company) data.append('company', company);
       if (skill) data.append('skill', skill);
       if (degree) data.append('degree', degree);
-      if (careergoals) data.append('careergoals', careergoals);
+      if (careerGoal) data.append('careerGoal', careerGoal);
       if (name) data.append('name', name);
       if (place) data.append('place', place);
       if (cv) data.append('cv', cv);
@@ -132,11 +132,12 @@ const EditProfile = () => {
       title: 'You can choose one image',
       mediaType: 'photo',
       includeBase64: true,
-      maxWidth: 10000,
-      maxHeight: 10000,
+      maxWidth: 256,
+      maxHeight: 256,
       storageOptions: {
         skipBackup: true,
       },
+      includeBase64: true,
     };
 
     ImagePicker.launchImageLibrary(options, response => {
@@ -229,8 +230,8 @@ const EditProfile = () => {
                   />
                 </View>
               </View>
-              <View style={styles.TwoInforContainer}>
-                <View style={styles.DateInput}>
+         
+                {/* <View style={styles.DateInput}>
                   <Text style={styles.title}>Ngày sinh</Text>
                   <TouchableOpacity
                     style={styles.DateBox}
@@ -251,8 +252,8 @@ const EditProfile = () => {
                       onChange={onChange}
                     />
                   )}
-                </View>
-                <View style={styles.GenderInput}>
+                </View> */}
+                <View style={styles.EmailInput}>
                   <Text style={styles.title}>Giới tính</Text>
                   <View style={styles.GenderBox}>
                     <Picker
@@ -260,13 +261,13 @@ const EditProfile = () => {
                       selectedValue={gender}
                       onValueChange={itemValue => setGender(itemValue)}
                       style={styles.GenderChoice}>
-                      <Picker.Item label="-" value="3" />
-                      <Picker.Item label="Nam" value="1" />
-                      <Picker.Item label="Nữ" value="0" />
+                      <Picker.Item label="-" value="-" />
+                      <Picker.Item label="Nam" value="Nam" />
+                      <Picker.Item label="Nữ" value="Nữ" />
                     </Picker>
                   </View>
                 </View>
-              </View>
+             
               <View style={styles.EmailInput}>
                 <Text style={styles.title}>Công ty</Text>
                 <View style={styles.emailBox}>
@@ -324,10 +325,7 @@ const EditProfile = () => {
               </View>
             </View>
           </View>
-        </ScrollView>
-        <View style={styles.line} />
-
-        <TouchableOpacity
+          <TouchableOpacity
           style={styles.button1}
           onPress={() => {
             sendUpdateData();
@@ -339,6 +337,9 @@ const EditProfile = () => {
             <Text style={styles.Button1Text}>Chỉnh sửa thông tin</Text>
           </LinearGradient>
         </TouchableOpacity>
+        </ScrollView>
+        <View style={styles.line} />
+      
         <Modal
           animationType="fade"
           transparent={true}
